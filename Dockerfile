@@ -99,6 +99,11 @@ RUN mkdir /usr/local/share/maps/france
 WORKDIR /usr/local/share/maps/france
 RUN wget http://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf
 
+# Ajout du fichier d'example pour Apache
+WORKDIR /var/www/html
+RUN rm index.html
+COPY apache/index.html index.html
+
 # Ajout de PostgreSQL dans runit
 RUN touch /first_start
 RUN mkdir /etc/service/00-postgresql
