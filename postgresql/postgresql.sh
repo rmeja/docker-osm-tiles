@@ -4,10 +4,11 @@ if [ -f /first_start ]; then
     /etc/init.d/postgresql start
     /sbin/setuser postgres createuser -s www-data
     /sbin/setuser postgres createdb -E UTF8 -O www-data gis
-    /sbin/setuser postgres psql -d gis -c 'CREATE EXTENSION postgis;'
+    /sbin/setuser postgres psql -d gis -c 'CREATE EXTENSION POSTGIS;'
+    /sbin/setuser postgres psql -d gis -c 'CREATE EXTENSION HSTORE;'
     /sbin/setuser postgres psql -d gis -c 'ALTER TABLE geometry_columns OWNER TO "www-data";'
     /sbin/setuser postgres psql -d gis -c 'ALTER TABLE spatial_ref_sys OWNER TO "www-data";'
-    /sbin/setuser postgres osm2pgsql --slim -d gis -C 16000 --number-processes 3 /usr/local/share/maps/france/lorraine-latest.osm.pbf
+    /sbin/setuser postgres osm2pgsql --slim -d gis -C 8000 --number-processes 3 /usr/local/share/maps/france/lorraine-latest.osm.pbf
     /etc/init.d/postgresql stop
     rm /first_start
 fi
