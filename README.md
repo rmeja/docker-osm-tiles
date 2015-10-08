@@ -6,10 +6,10 @@ Serveur de fond de cartes OpenStreetMap (en developpement)
 docker build -t rmeja/osm-tiles .
 ```
 
-## Création de mon conteneur
+## Création du conteneur
 ```
 docker run -d -p 8484:80 rmeja/osm-tiles:latest
 ```
 
 ## A faire :
-- Différer le demarrage d'Apache et de Renderd apres que le remplissage de la base de données soit finis (osmpgsql)
+- Mettre PostgreSQL dans un autre conteneur Docker afin de mieux gérer l'import des data avec osm2pgsql
