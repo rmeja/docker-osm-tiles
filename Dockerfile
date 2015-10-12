@@ -106,16 +106,16 @@ COPY apache/index.html index.html
 
 # Ajout de PostgreSQL dans runit
 RUN touch /first_start
-RUN mkdir /etc/service/00-postgresql
-ADD postgresql/postgresql.sh /etc/service/00-postgresql/run
+RUN mkdir /etc/service/postgresql
+ADD postgresql/postgresql.sh /etc/service/postgresql/run
 
 # Ajout de Renderd dans runit
-RUN mkdir /etc/service/10-renderd
-ADD renderd/renderd.sh /etc/service/10-renderd/run
+RUN mkdir /etc/service/renderd
+ADD renderd/renderd.sh /etc/service/renderd/run
 
 # Ajout d'Apache dans runit
-RUN mkdir /etc/service/20-apache
-ADD apache/apache.sh /etc/service/20-apache/run
+RUN mkdir /etc/service/apache
+ADD apache/apache.sh /etc/service/apache/run
 
 WORKDIR /
 
