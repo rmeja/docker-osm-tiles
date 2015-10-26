@@ -8,7 +8,6 @@ if [ -f /first_start ]; then
     /sbin/setuser postgres psql -d gis -c 'CREATE EXTENSION HSTORE;'
     /sbin/setuser postgres psql -d gis -c 'ALTER TABLE geometry_columns OWNER TO "www-data";'
     /sbin/setuser postgres psql -d gis -c 'ALTER TABLE spatial_ref_sys OWNER TO "www-data";'
-    /sbin/setuser postgres osm2pgsql --slim -d gis -C 8000 --number-processes 3 /usr/local/share/maps/france/lorraine-latest.osm.pbf
     /etc/init.d/postgresql stop
     rm /first_start
 fi

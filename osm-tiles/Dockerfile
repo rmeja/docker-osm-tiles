@@ -8,23 +8,9 @@ RUN apt-get update
 RUN apt-get -y dist-upgrade
 
 # Installation des dépendances necessaires pour la suite des opérations
-RUN apt-get -y install libboost-all-dev subversion git tar unzip wget bzip2 build-essential autoconf libtool \
-libxml2-dev libgeos-dev libgeos++-dev libpq-dev libbz2-dev libproj-dev munin-node munin libprotobuf-c0-dev \
-protobuf-c-compiler libfreetype6-dev libpng12-dev libtiff4-dev libicu-dev libgdal-dev libcairo-dev \
-libcairomm-1.0-dev apache2 apache2-dev libagg-dev liblua5.2-dev ttf-unifont lua5.1 liblua5.1-dev node-carto \
-g++ make expat libexpat1-dev zlib1g-dev
-
-# Installation de PostgreSQL et de PostGIS
-RUN apt-get -y install postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1
-
-# Installation de osm2pgsql
-WORKDIR /opt
-RUN git clone git://github.com/openstreetmap/osm2pgsql.git
-WORKDIR /opt/osm2pgsql
-RUN ./autogen.sh
-RUN ./configure
-RUN make
-RUN make install
+RUN apt-get -y install apache2 apache2-dev git wget libboost-all-dev g++ build-essential autoconf libtool \
+  libxml2-dev libgeos-dev libgeos++-dev libpq-dev libbz2-dev libproj-dev libprotobuf-c0-dev protobuf-c-compiler \
+  libfreetype6-dev libpng12-dev libtiff4-dev libicu-dev libgdal-dev libcairo-dev unzip node-carto
 
 # Installation de la bibliothèque Mapnik
 WORKDIR /opt
@@ -47,14 +33,6 @@ RUN make
 RUN make install
 RUN make install-mod_tile
 RUN ldconfig
-
-# Installation d'Overpass
-WORKDIR /opt
-RUN wget http://dev.overpass-api.de/releases/osm-3s_v0.7.52.tar.gz
-RUN tar -zxvf osm-3s_v0.7.52.tar.gz
-WORKDIR /opt/osm-3s_v0.7.52
-RUN ./configure CXXFLAGS="-O3" --prefix=/usr/local
-RUN make install
 
 # Installation d'OSM Bright
 RUN mkdir -p /usr/local/share/maps/style
@@ -112,11 +90,6 @@ RUN wget http://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf
 WORKDIR /var/www/html
 RUN rm index.html
 COPY apache/index.html index.html
-
-# Ajout de PostgreSQL dans runit
-RUN touch /first_start
-RUN mkdir /etc/service/postgresql
-ADD postgresql/postgresql.sh /etc/service/postgresql/run
 
 # Ajout de Renderd dans runit
 RUN mkdir /etc/service/renderd
