@@ -16,6 +16,10 @@ RUN apt-get -y install autoconf automake libtool make g++ pkg-config libboost-de
 # Installation de PostgreSQL et de PostGIS
 RUN apt-get -y install postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 git
 
+# Configuration de PostgreSQL
+RUN echo "host gis www-data 0.0.0.0/0 trust" >> /etc/postgresql/9.3/main/pg_hba.conf
+RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
+
 # Installation de osm2pgsql
 WORKDIR /opt
 RUN git clone git://github.com/openstreetmap/osm2pgsql.git
@@ -31,9 +35,11 @@ WORKDIR /usr/local/share/maps/france
 RUN wget http://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf
 
 # Ajout de PostgreSQL dans runit
-RUN touch /first_start
 RUN mkdir /etc/service/postgresql
+RUN touch /etc/service/postgresql/first_start
 COPY postgresql.sh /etc/service/postgresql/run
+
+EXPOSE 5432
 
 WORKDIR /
 

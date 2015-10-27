@@ -10,7 +10,8 @@ RUN apt-get -y dist-upgrade
 # Installation des dépendances necessaires pour la suite des opérations
 RUN apt-get -y install apache2 apache2-dev git wget libboost-all-dev g++ build-essential autoconf libtool \
   libxml2-dev libgeos-dev libgeos++-dev libpq-dev libbz2-dev libproj-dev libprotobuf-c0-dev protobuf-c-compiler \
-  libfreetype6-dev libpng12-dev libtiff4-dev libicu-dev libgdal-dev libcairo-dev unzip node-carto
+  libfreetype6-dev libpng12-dev libtiff4-dev libicu-dev libgdal-dev libcairo-dev unzip node-carto ttf-unifont \
+  postgresql-client-9.3
 
 # Installation de la bibliothèque Mapnik
 WORKDIR /opt
@@ -60,12 +61,9 @@ WORKDIR /usr/local/share/maps/style/osm-bright-master/osm-bright
 RUN rm osm-bright.osm2pgsql.mml
 COPY osm-bright.osm2pgsql.mml osm-bright.osm2pgsql.mml
 
-# Compilation des feuilles de style
+# Ajout des feuilles de style
 WORKDIR /usr/local/share/maps/style/osm-bright-master
 COPY configure.py configure.py
-RUN ./make.py
-WORKDIR /usr/local/share/maps/style/OSMBright
-RUN carto project.mml > OSMBright.xml
 
 # Configuration de renderd
 RUN rm /usr/local/etc/renderd.conf
@@ -81,11 +79,6 @@ RUN rm /etc/apache2/sites-available/000-default.conf
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enconf mod_tile
 
-# Chargement des données d'OpenStreetMap
-RUN mkdir /usr/local/share/maps/france
-WORKDIR /usr/local/share/maps/france
-RUN wget http://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf
-
 # Ajout du fichier d'example pour Apache
 WORKDIR /var/www/html
 RUN rm index.html
@@ -93,6 +86,7 @@ COPY apache/index.html index.html
 
 # Ajout de Renderd dans runit
 RUN mkdir /etc/service/renderd
+RUN touch /etc/service/renderd/first_start
 ADD renderd/renderd.sh /etc/service/renderd/run
 
 # Ajout d'Apache dans runit
