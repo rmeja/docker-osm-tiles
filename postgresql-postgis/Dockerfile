@@ -34,6 +34,13 @@ RUN mkdir -p /usr/local/share/maps/france
 WORKDIR /usr/local/share/maps/france
 RUN wget http://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf
 
+# Optimisation de PostgreSQL
+RUN sed -i -e "s/shared_buffers = 24MB/shared_buffers = 128MB/" \
+  -e "s/#checkpoint_segments = 3/checkpoint_segments = 20/" \
+  -e "s/#maintenance_work_mem = 16MB/maintenance_work_mem = 256MB/" \
+  -e "s/#autovacuum = on/autovacuum = off/" \
+  /etc/postgresql/9.3/main/postgresql.conf
+
 # Ajout de PostgreSQL dans runit
 RUN mkdir /etc/service/postgresql
 RUN touch /etc/service/postgresql/first_start
