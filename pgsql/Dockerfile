@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 RUN apt-get -y dist-upgrade
 
-# Installation des dépendances necessaires
+# Installation des paquets necessaires
 RUN apt-get -y install autoconf automake libtool make g++ libboost-dev \
   libboost-system-dev libboost-filesystem-dev libboost-thread-dev libxml2-dev \
   libgeos-dev libgeos++-dev libpq-dev libbz2-dev libproj-dev \

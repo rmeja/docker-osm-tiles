@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 RUN apt-get -y dist-upgrade
 
-# Installation des dépendances necessaires
+# Installation des paquets necessaires
 RUN apt-get -y install apache2 apache2-dev git wget libboost-all-dev g++ build-essential autoconf libtool \
   libxml2-dev libgeos-dev libgeos++-dev libpq-dev libbz2-dev libproj-dev libprotobuf-c0-dev protobuf-c-compiler \
   libfreetype6-dev libpng12-dev libtiff4-dev libicu-dev libgdal-dev libcairo-dev unzip node-carto ttf-unifont \
@@ -87,11 +87,11 @@ COPY apache/index.html index.html
 # Ajout de Renderd dans runit
 RUN mkdir /etc/service/renderd
 RUN touch /etc/service/renderd/first_start
-ADD renderd/renderd.sh /etc/service/renderd/run
+COPY renderd/renderd.sh /etc/service/renderd/run
 
 # Ajout d'Apache dans runit
 RUN mkdir /etc/service/apache
-ADD apache/apache.sh /etc/service/apache/run
+COPY apache/apache.sh /etc/service/apache/run
 
 WORKDIR /
 
