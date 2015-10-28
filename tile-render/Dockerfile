@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 RUN apt-get -y dist-upgrade
 
-# Installation des dépendances necessaires pour la suite des opérations
+# Installation des dépendances necessaires
 RUN apt-get -y install apache2 apache2-dev git wget libboost-all-dev g++ build-essential autoconf libtool \
   libxml2-dev libgeos-dev libgeos++-dev libpq-dev libbz2-dev libproj-dev libprotobuf-c0-dev protobuf-c-compiler \
   libfreetype6-dev libpng12-dev libtiff4-dev libicu-dev libgdal-dev libcairo-dev unzip node-carto ttf-unifont \

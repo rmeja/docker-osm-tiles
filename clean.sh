@@ -1,9 +1,9 @@
 #!/bin/sh
 
 echo "Arrêt des conteneurs"
-docker stop osm-web
+docker stop tile-render
 docker stop pgsql
 
 echo "Suppression des conteneurs"
-docker rm osm-web
+docker rm tile-render
 docker rm pgsql
